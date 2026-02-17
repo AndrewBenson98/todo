@@ -28,7 +28,7 @@ public class TodoController {
      * Get all todos
      * @return List of all todos
      */
-    @GetMapping("/todos")
+    @GetMapping("/todo")
     public ResponseEntity<?> getAllTodos() {
         return ResponseEntity.ok(todoService.findAll());
     }
@@ -38,7 +38,7 @@ public class TodoController {
         * @param id The id of the todo to retrieve
         * @return The todo with the specified id
         */
-        @GetMapping("/todos/{id}")
+        @GetMapping("/todo/{id}")
     public ResponseEntity<?> getTodoById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(todoService.findById(id));
     }
@@ -49,7 +49,7 @@ public class TodoController {
      * @param id
      * @return 204 No Content if the todo was deleted successfully, or 404 Not Found if the todo with the specified id does not exist
      */
-    @DeleteMapping("/todos/{id}")
+    @DeleteMapping("/todo/{id}")
     public ResponseEntity<?> deleteTodoById(@PathVariable("id") Long id) {
         todoService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -60,7 +60,7 @@ public class TodoController {
      * @param todo The todo to create
      * @return The created todo
      */
-    @PostMapping("/todos")
+    @PostMapping("/todo")
     public ResponseEntity<?> createTodo(@RequestBody TodoDTO todo) {
         System.out.println("In create todo controller method with todo: " + todo);
         return ResponseEntity.ok(todoService.saveTodo(todo));
@@ -72,7 +72,7 @@ public class TodoController {
      * @param todo The updated todo data
      * @return The updated todo, or 404 Not Found if the todo with the specified id does not exist
      */
-    @PutMapping("/todos/{id}")
+    @PutMapping("/todo/{id}")
     public ResponseEntity<?> updateTodo(@PathVariable("id") Long id, @RequestBody TodoDTO todo) {
         return ResponseEntity.ok(todoService.updateTodo(id, todo));
     }

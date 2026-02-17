@@ -54,19 +54,11 @@ public class TodoServiceImpl implements TodoService {
              throw new ResourceAlreadyExistsException("Todo with the same title and description already exists");
          }
 
-        todo.setCompleted(false);
+         todo.setCompleted(false);
          todo.setCreatedAt(LocalDateTime.now());
+         Todo savedTodo = todoRepository.save(todo);
 
-        Todo savedTodo = todoRepository.save(todo);
-         System.out.println("Saved todo: " + savedTodo);
-
-         TodoDTO savedTodoDTO = todoMapper.toDto(savedTodo);
-
-
-         System.out.println("Saved todoDTO: " + savedTodoDTO);
-
-
-         return savedTodoDTO;
+        return todoMapper.toDto(savedTodo);
     }
 
     @Override
@@ -83,13 +75,21 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoDTO updateTodo(Long id, TodoDTO todoDto) {
        Todo todo = todoMapper.toEntity(todoDto);
+       System.out.println("Updating todo with id: " + id + " and data: " + todo);
 
         Optional<Todo> optTodo = todoRepository.findById(id);
         if(optTodo.isPresent()) {
             Todo existingTodo = optTodo.get();
-            existingTodo.setTitle(todo.getTitle());
-            existingTodo.setDescription(todo.getDescription());
-            existingTodo.setCompleted(todo.getCompleted());
+
+            if(todo.getTitle() != null)
+                existingTodo.setTitle(todo.getTitle());
+
+            if(todo.getDescription() != null)
+                existingTodo.setDescription(todo.getDescription());
+
+            if(todo.getCompleted() != null)
+                existingTodo.setCompleted(todo.getCompleted());
+
             todoRepository.save(existingTodo );
             return todoMapper.toDto(existingTodo);
         }else{
